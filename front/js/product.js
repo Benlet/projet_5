@@ -39,42 +39,30 @@ fetch("http://localhost:3000/api/products/"+leId)
         colors.innerHTML += `<option value="${color}">${color}</option>`
         }
 
+
         const bouton = document.getElementById("addToCart");
         bouton.addEventListener("click", function(){
-            console.log("click");
-            addToBasket(leId);
-
-            function saveBasket(basket){
-                localStorage.setItem("basket",JSON.stringify(basket));
+            const color = document.getElementById("colors");
+            const quantity = document.getElementById("quantity");
+            const quantityValue = parseInt(quantity.value);
+            console.log(colors.value);
+            if (!color.value || !quantityValue){
+                alert("Veuillez sélectionné une couleur et une quantité valide")
+                return
             }
-
-            function getBasket(){
-                let basket = localStorage.getItem("basket");
-                if(basket == null){
-                    return []
-                }
-                else{
-                    return JSON.parse(basket);
-                }
+            if(quantityValue < 1 || quantityValue > 100){
+                alert("Selectionnez une quantité entre 1 et 100")
+                return
             }
-            
-            function addToBasket(product){
-                let basket = getBasket();
-                let foundProduct = basket.find(p => p.id = product.id);
-                if(product != undefined){
-                    product.quantity++;
-                }
-                else{
-                    product.quantity = 1;
-                    basket.push(product);
-                }
-                saveBasket(basket);
+            const product = {
+                id: item._id,
+                color: color.value,
+                quantity: quantityValue
             }
+            addToBasket(product);
+            alert("Le produit a bien été ajouté au panier")
         })
     });
-
-
-
 
 
 

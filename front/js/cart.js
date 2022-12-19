@@ -1,64 +1,50 @@
-function saveBasket(basket){
-    localStorage.setItem("basket",JSON.stringify(basket));
-}
+const basket = getBasket();
 
-function getBasket(){
-    let basket = localStorage.getItem("basket");
-    if(basket == null){
-        return []
-    }
-    else{
-        return JSON.parse(basket);
-    }
-}
+    for (let i = 0; i < basket.length; i++){
+        const item = basket[i];
+        fetch("http://localhost:3000/api/products/" + item.id)
+    .then(function(response) {
+        return response.json();
+      })
+      .then(function(product){
+        console.log(product);
 
-function addToBasket(product){
-    let basket = getBasket();
-    let foundProduct = basket.find(p => p.id = product.id);
-    if(product != undefined){
-        product.quantity++;
-    }
-    else{
-        product.quantity = 1;
-        basket.push(product);
-    }
-    saveBasket(basket);
-}
+        const cartItem = document.getElementById("cart__items");
+        cartItem.innerHTML += `<article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
+        <div class="cart__item__img">
+          <img src="${product.imageUrl}" alt="Photographie d'un canapé">
+        </div>
+        <div class="cart__item__content">
+          <div class="cart__item__content__description">
+            <h2>${product.name}</h2>
+            <p>${item.color}</p>
+            <p>${product.price}€</p>
+          </div>
+          <div class="cart__item__content__settings">
+            <div class="cart__item__content__settings__quantity">
+              <p>Qté : </p>
+              <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${item.quantity}">
+            </div>
+            <div class="cart__item__content__settings__delete">
+              <p class="deleteItem">Supprimer</p>
+            </div>
+          </div>
+        </div>
+      </article>`
+      })
+    }  
 
-function removeFromBasket(product){
-    let basket = getBasket();
-    basket = basket.filter(p => p.id != product.id);
-    saveBasket(basket);
-}
 
-function changeQuantity(product, quantity){
-    let basket = getBasket();
-    let foundProduct = basket.find(p => p.id = product.id);
-    if (foundProduct != undefined){
-        foundProduct.quantity += quantity;
-        if (foundProduct.quantity <= 0){
-            removeFromBasket(foundProduct);
-        }
-        else{
-            saveBasket(basket);
-        }
-    }
-}
 
-function getNumberProduct(){
-    let basket = getBasket();
-    let number = 0;
-    for (let product of basket){
-        number += product.quantity;
-    }
-    return number;
-}
 
-function getTotalPrice(){
-    let basket = getBasket();
-    let total = 0;
-    for (let product of basket){
-        total += product.quantity * product.price;
-    }
-    return total;
-}
+
+
+
+
+
+
+
+   // function makeImage(item){
+     //   const image = document.createElement("img")
+       // image.src = 
+    
