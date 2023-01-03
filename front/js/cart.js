@@ -31,25 +31,29 @@ const basket = getBasket();
           </div>
         </div>
       </article>`
-      })
 
-        const totalQuantity = document.getElementById("totalQuantity");
-        totalQuantity.innerHTML = getNumberProduct();
-
-
-        const totalPrice = document.getElementById("totalPrice")
-        totalPrice.innerHTML = getTotalPrice(product.price)
+      const totalQuantity = document.getElementById("totalQuantity");
+      totalQuantity.innerHTML = getNumberProduct();
 
 
-        const changeQuantityButton = document.getElementsByClassName("cart__item__content__settings__quantity");
-        changeQuantityButton.addEventListener("change", function(){
+      const totalPrice = document.getElementById("totalPrice")
+      totalPrice.innerHTML = getTotalPrice(product.price)
+
+
+      const changeQuantityButton = document.getElementsByClassName("itemQuantity");
+      console.log(changeQuantityButton[0])
+      changeQuantityButton.forEach(btn => {
+        btn.addEventListener("change", function(){
+          console.log("ok")
           changeQuantity(quantity);
         })
+      })
 
-        const deleteButton = document.getElementsByClassName("deleteItem")
-        deleteButton.addEventListener("click", function(){
-          removeFromBasket(product);
-        })
+      const deleteButton = document.getElementsByClassName("deleteItem")
+      deleteButton.addEventListener("click", function(){
+        removeFromBasket(product);
+      })
+      })
     }
 
     const orderButton = document.getElementById("order");
