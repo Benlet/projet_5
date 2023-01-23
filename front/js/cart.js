@@ -1,60 +1,92 @@
 const basket = getBasket();
 
+displayBasket();
+
+  function displayBasket(){
+    const cartItem = document.getElementById("cart__items");
+    cartItem.innerHTML = "";
     for (let i = 0; i < basket.length; i++){
-        const item = basket[i];
-        fetch("http://localhost:3000/api/products/" + item.id)
-    .then(function(response) {
-        return response.json();
-      })
-      .then(function(product){
-        console.log(product);
+      const item = basket[i];
+      fetch("http://localhost:3000/api/products/" + item.id)
+  .then(function(response) {
+      return response.json();
+    })
+    .then(function(product){
+      console.log(product);
 
-        const cartItem = document.getElementById("cart__items");
-        cartItem.innerHTML += `<article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
-        <div class="cart__item__img">
-          <img src="${product.imageUrl}" alt="Photographie d'un canapé">
+      cartItem.innerHTML += `<article class="cart__item" data-id="${item.id}" data-color="${item.color}">
+      <div class="cart__item__img">
+        <img src="${product.imageUrl}" alt="Photographie d'un canapé">
+      </div>
+      <div class="cart__item__content">
+        <div class="cart__item__content__description">
+          <h2>${product.name}</h2>
+          <p>${item.color}</p>
+          <p>${product.price}€</p>
         </div>
-        <div class="cart__item__content">
-          <div class="cart__item__content__description">
-            <h2>${product.name}</h2>
-            <p>${item.color}</p>
-            <p>${product.price}€</p>
+        <div class="cart__item__content__settings">
+          <div class="cart__item__content__settings__quantity">
+            <p>Qté : </p>
+            <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${item.quantity}">
           </div>
-          <div class="cart__item__content__settings">
-            <div class="cart__item__content__settings__quantity">
-              <p>Qté : </p>
-              <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${item.quantity}">
-            </div>
-            <div class="cart__item__content__settings__delete">
-              <p class="deleteItem">Supprimer</p>
-            </div>
+          <div class="cart__item__content__settings__delete">
+            <p class="deleteItem">Supprimer</p>
           </div>
         </div>
-      </article>`
+      </div>
+    </article>`
 
-      const totalQuantity = document.getElementById("totalQuantity");
-      totalQuantity.innerHTML = getNumberProduct();
-
-
-      const totalPrice = document.getElementById("totalPrice")
-      totalPrice.innerHTML = getTotalPrice(product.price)
+    const totalQuantity = document.getElementById("totalQuantity");
+    totalQuantity.innerHTML = getNumberProduct();
 
 
-      const changeQuantityButton = document.getElementsByClassName("itemQuantity");
-      console.log(changeQuantityButton[0])
-      changeQuantityButton.forEach(btn => {
-        btn.addEventListener("change", function(){
-          console.log("ok")
-          changeQuantity(quantity);
-        })
-      })
+    const totalPrice = document.getElementById("totalPrice")
+    totalPrice.innerHTML = getTotalPrice(product.price)
 
-      const deleteButton = document.getElementsByClassName("deleteItem")
-      deleteButton.addEventListener("click", function(){
-        removeFromBasket(product);
-      })
-      })
-    }
+
+    const changeQuantityButton = document.querySelectorAll(".itemQuantity");
+    changeQuantityButton.forEach(btn => {
+      btn.addEventListener("change", function(event){
+        const quantity = event.target.value;
+        changeQuantity(event.target);
+      });
+    })
+
+    const deleteButton = document.querySelectorAll(".deleteItem");
+    deleteButton.forEach(btn => {
+      btn.addEventListener("click", function(event){
+        const deleteFromBasket = event.target.value;
+        removeFromBasket(event.target);
+      });
+    })
+    
+
+      function changeQuantity(input){
+        const quantity = parseInt(input.value);
+        const article = input.closest("article");
+        const id = article.dataset.id;
+        const color = article.dataset.color;
+        console.log(id, color);
+        const match = basket.find((product) => product.id === id && product.color === color); 
+        match.quantity = quantity;
+        console.log(match)
+        saveBasket(basket);
+        window.location.reload();
+        displayBasket();
+      }
+
+      function removeFromBasket(){
+        const quantity = parseInt(input.value);
+        const article = input.closest("article");
+        const id = article.dataset.id;
+        const color = article.dataset.color;
+        const match = basket.filter((product) => product.id != id && product.color != color);
+        match.quantity = quantity
+        saveBasket(basket);
+        window.location.reload();
+        displayBasket();
+      }
+    })
 
     const orderButton = document.getElementById("order");
     orderButton.addEventListener("click", function(event){
@@ -102,4 +134,4 @@ const basket = getBasket();
       return body
     }
 
-   
+  }}
