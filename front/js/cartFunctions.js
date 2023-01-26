@@ -15,7 +15,6 @@ function getBasket(){
 function addToBasket(product){
     let basket = getBasket();
     let foundProduct = basket.find(p => p.id === product.id && p.color === product.color);
-    console.log(foundProduct);
     if(foundProduct != undefined){
         foundProduct.quantity += product.quantity;
     }
@@ -59,7 +58,7 @@ function getTotalPrice(price){
     let basket = getBasket();
     let total = 0;
     for (let product of basket){
-        total += product.quantity * price;
+        total = product.quantity * price
     }
     return total;
 }

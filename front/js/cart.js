@@ -12,7 +12,7 @@ displayBasket();
       return response.json();
     })
     .then(function(product){
-      console.log(product);
+
 
       cartItem.innerHTML += `<article class="cart__item" data-id="${item.id}" data-color="${item.color}">
       <div class="cart__item__img">
@@ -41,7 +41,7 @@ displayBasket();
 
 
     const totalPrice = document.getElementById("totalPrice")
-    totalPrice.innerHTML = getTotalPrice(product.price)
+    totalPrice.innerHTML = getTotalPrice(parseInt(product.price))
 
 
     const changeQuantityButton = document.querySelectorAll(".itemQuantity");
@@ -66,7 +66,6 @@ displayBasket();
         const article = input.closest("article");
         const id = article.dataset.id;
         const color = article.dataset.color;
-        console.log(id, color);
         const match = basket.find((product) => product.id === id && product.color === color); 
         match.quantity = quantity;
         console.log(match)

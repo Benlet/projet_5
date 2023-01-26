@@ -9,10 +9,8 @@ console.log(queryString);
 
 //Trouver l'id via URLsearchParams() et .get
 const searchParam = new URLSearchParams(queryString);
-console.log(searchParam);
 
 const leId = searchParam.get("id");
-console.log(leId);
 
 //L'image du canapé
 fetch("http://localhost:3000/api/products/"+leId)
@@ -37,6 +35,12 @@ fetch("http://localhost:3000/api/products/"+leId)
         const color = item.colors[i];
         const colors = document.getElementById("colors");
         colors.innerHTML += `<option value="${color}">${color}</option>`
+
+        if (item.id != leId){
+            console.log(item.id)
+            console.log(leId)
+            return alert("Error 404")
+        }
         }
 
 
