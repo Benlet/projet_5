@@ -1,4 +1,4 @@
-fetch("http://localhost:3000/api/products")
+/*fetch("http://localhost:3000/api/products")
     .then(function(response) {
         return response.json();
       })
@@ -27,7 +27,27 @@ fetch("http://localhost:3000/api/products")
             <link rel="mask-icon" href="images/favicon/safari-pinned-tab.svg" color="#5bbad5">
             <meta name="msapplication-TileColor" content="#da532c">
             <meta name="theme-color" content="#ffffff">`
-      });
+      });*/
 
 
-      
+const init = async () => {
+  const response = await fetch("http://localhost:3000/api/products");
+  const canapes = await response.json();
+
+  const items = document.getElementById("items");
+  let listeCanapeCard = '';
+  canapes.forEach(canape => {
+    listeCanapeCard += `<a href="./product.html?id=${canape._id}">
+            <article>
+              <img src="${canape.imageUrl}" alt="Lorem ipsum dolor sit amet, Kanap name1">
+              <h3 class="productName">${canape.name}</h3>
+              <p class="productDescription">${canape.description}</p>
+            </article>
+          </a>`
+  });
+  items.innerHTML = listeCanapeCard;
+}
+
+init();
+
+
